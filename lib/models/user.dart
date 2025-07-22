@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Users {
   String? uid;
@@ -26,31 +25,32 @@ class Users {
     this.searchKey,
   });
 
-  static fromJson(dynamic data) {
+  Map<String, dynamic> toJson() => {
+    if (uid != null) 'uid': uid,
+    if (email != null) 'email': email,
+    if (username != null) 'username': username,
+    if (bio != null) 'bio': bio,
+    if (photoUrl != null) 'photoUrl': photoUrl,
+    if (followers != null) 'followers': followers,
+    if (following != null) 'following': following,
+    if (posts != null) 'posts': posts,
+    if (saved != null) 'saved': saved,
+    if (searchKey != null) 'searchKey': searchKey,
+  };
+
+  static Users fromJson(DocumentSnapshot snap) {
+    final snapshot = snap.data() as Map<String, dynamic>?;
     return Users(
-      uid: data['uid'],
-      email: data['email'],
-      username: data['username'],
-      bio: data['bio'],
-      photoUrl: data['photoUrl'],
-      followers: data['followers'],
-      following: data['following'],
-      posts: data['posts'],
-      saved: data['saved'],
-      searchKey: data['searchKey'],
+      uid: snapshot?['uid'],
+      email: snapshot?['email'],
+      username: snapshot?['username'],
+      bio: snapshot?['bio'],
+      photoUrl: snapshot?['photoUrl'],
+      followers: snapshot?['followers'],
+      following: snapshot?['following'],
+      posts: snapshot?['posts'],
+      saved: snapshot?['saved'],
+      searchKey: snapshot?['searchKey'],
     );
   }
-
-  Map<String, dynamic> toJson() => {
-    'uid': uid,
-    'email': email,
-    'username': username,
-    'bio': bio,
-    'photoUrl': photoUrl,
-    'followers': followers,
-    'following': following,
-    'posts': posts,
-    'saved': saved,
-    'searchKey': searchKey,
-  };
 }
