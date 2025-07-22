@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import '../widgets/text_field.dart';
+import './login_screen.dart';
 
 class SignUp extends StatefulWidget {
-  final TextEditingController emailController;
-  final TextEditingController usernameController;
-  final TextEditingController passwordController;
-  final TextEditingController passwordConfirmController;
+  final TextEditingController? emailController;
+  final TextEditingController? usernameController;
+  final TextEditingController? passwordController;
+  final TextEditingController? passwordConfirmController;
   final bool _passwordVisible = true;
 
   const SignUp({
     super.key,
-    required this.emailController,
-    required this.usernameController,
-    required this.passwordController,
-    required this.passwordConfirmController,
+    this.emailController,
+    this.usernameController,
+    this.passwordController,
+    this.passwordConfirmController,
   });
 
   @override
@@ -152,7 +153,14 @@ class _SignUpState extends State<SignUp> {
                     children: [
                       Text("Have an account?"),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginScreen(),
+                            ),
+                          );
+                        },
                         child: Text(
                           "Log in",
                           style: TextStyle(

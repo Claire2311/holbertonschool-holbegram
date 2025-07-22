@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import '../widgets/text_field.dart';
+import './signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-  final TextEditingController emailController;
-  final TextEditingController passwordController;
+  final TextEditingController? emailController;
+  final TextEditingController? passwordController;
   final bool _passwordVisible = true;
 
-  const LoginScreen({
-    super.key,
-    required this.emailController,
-    required this.passwordController,
-  });
+  const LoginScreen({super.key, this.emailController, this.passwordController});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -118,7 +115,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         Text("Don't have an account"),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => SignUp()),
+                            );
+                          },
                           child: Text(
                             "Sign up",
                             style: TextStyle(
