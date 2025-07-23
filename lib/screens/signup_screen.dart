@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:holbegram/methods/auth_methods.dart';
 import '../widgets/text_field.dart';
 import './login_screen.dart';
 
@@ -138,7 +139,14 @@ class _SignUpState extends State<SignUp> {
                           Color.fromARGB(218, 226, 37, 24),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        String result = await AuthMethode().signUpUser(
+                          context: context,
+                          email: _emailController.text.trim(),
+                          password: _passwordController.text.trim(),
+                          username: _usernameController.text.trim(),
+                        );
+                      },
                       child: Text(
                         "Sign up",
                         style: TextStyle(color: Colors.white),
