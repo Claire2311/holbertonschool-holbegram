@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:holbegram/methods/auth_methods.dart';
+import 'package:holbegram/screens/auth/upload_image_screen.dart';
 import '../widgets/text_field.dart';
 import './login_screen.dart';
+import '../screens/upload_image_screen.dart';
 
 class SignUp extends StatefulWidget {
   final TextEditingController? emailController;
@@ -140,12 +142,22 @@ class _SignUpState extends State<SignUp> {
                         ),
                       ),
                       onPressed: () async {
-                        String result = await AuthMethode().signUpUser(
-                          context: context,
-                          email: _emailController.text.trim(),
-                          password: _passwordController.text.trim(),
-                          username: _usernameController.text.trim(),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddPicture(
+                              email: _emailController.text.trim(),
+                              password: _passwordController.text.trim(),
+                              username: _usernameController.text.trim(),
+                            ),
+                          ),
                         );
+                        // String result = await AuthMethode().signUpUser(
+                        //   context: context,
+                        //   email: _emailController.text.trim(),
+                        //   password: _passwordController.text.trim(),
+                        //   username: _usernameController.text.trim(),
+                        // );
                       },
                       child: Text(
                         "Sign up",

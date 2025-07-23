@@ -1,8 +1,7 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:holbegram/methods/auth_methods.dart';
 import 'dart:typed_data';
-
 import 'package:image_picker/image_picker.dart';
 
 class AddPicture extends StatefulWidget {
@@ -55,8 +54,9 @@ class _AddPictureState extends State<AddPicture> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: 100),
@@ -65,18 +65,20 @@ class _AddPictureState extends State<AddPicture> {
               style: TextStyle(fontFamily: 'Billabong', fontSize: 50),
             ),
             Image.asset('assets/images/logo.webp', width: 80, height: 60),
+            SizedBox(height: 50),
             Text(
               'Hello, ${widget.username} Welcome to Holbegram.',
               style: TextStyle(fontSize: 20),
             ),
             Text("Choose an image from your gallery or take a new one."),
+            SizedBox(height: 50),
             _image != null
                 ? CircleAvatar(
-                    radius: 64,
+                    radius: 100,
                     backgroundImage: MemoryImage(_image!),
                   )
                 : const CircleAvatar(
-                    radius: 64,
+                    radius: 100,
                     backgroundImage: NetworkImage(
                       'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png',
                     ),
@@ -86,27 +88,59 @@ class _AddPictureState extends State<AddPicture> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 IconButton(
+                  iconSize: 50,
                   onPressed: selectImageFromGallery,
                   icon: Icon(Icons.image_outlined),
                   color: Color.fromARGB(218, 226, 37, 24),
                 ),
                 IconButton(
+                  iconSize: 50,
                   onPressed: selectImageFromCamera,
                   icon: Icon(Icons.camera_alt_outlined),
                   color: Color.fromARGB(218, 226, 37, 24),
                 ),
-                // ElevatedButton(
-                //   onPressed: selectImageFromGallery,
-                //   child: const Text('Gallery'),
-                // ),
-                // ElevatedButton(
-                //   onPressed: selectImageFromCamera,
-                //   child: const Text('Camera'),
-                // ),
               ],
             ),
             const SizedBox(height: 20),
-            ElevatedButton(onPressed: () {}, child: Text("Next")),
+            ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all(
+                  Color.fromARGB(218, 226, 37, 24),
+                ),
+              ),
+              onPressed: () async {
+                AuthMethode authMethode = AuthMethode();
+                String result = await authMethode.signUpUser(
+                  context: context,
+                  email: widget.email,
+                  password: widget.password,
+                  username: widget.username,
+                  file: _image,
+                );
+                // Handle the result here
+                if (result == "success") {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Success"),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                  }
+                } else {
+                  // Show error message
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(result)));
+                  }
+                }
+              },
+              child: Text(
+                "Next",
+                style: TextStyle(color: Colors.white, fontSize: 30),
+              ),
+            ),
           ],
         ),
       ),
