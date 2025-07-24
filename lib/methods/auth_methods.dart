@@ -84,4 +84,24 @@ class AuthMethode {
       return e.message ?? "An error occurred";
     }
   }
+
+  Future<Users?> getUserDetails() async {
+    if (_auth.currentUser == null) {
+      return null;
+    }
+
+    String userId = _auth.currentUser!.uid;
+
+    try {
+      final docSnap = await _firestore.collection("users").doc(userId).get();
+
+      if (docSnap.exists && docSnap.data() != null) {
+        return Users.fromJson(docSnap);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
 }

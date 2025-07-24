@@ -25,18 +25,20 @@ class Users {
     this.searchKey,
   });
 
-  Map<String, dynamic> toJson() => {
-    if (uid != null) 'uid': uid,
-    if (email != null) 'email': email,
-    if (username != null) 'username': username,
-    if (bio != null) 'bio': bio,
-    if (photoUrl != null) 'photoUrl': photoUrl,
-    if (followers != null) 'followers': followers,
-    if (following != null) 'following': following,
-    if (posts != null) 'posts': posts,
-    if (saved != null) 'saved': saved,
-    if (searchKey != null) 'searchKey': searchKey,
-  };
+  Map<String, dynamic> toJson() {
+    return {
+      if (uid != null) 'uid': uid,
+      if (email != null) 'email': email,
+      if (username != null) 'username': username,
+      if (bio != null) 'bio': bio,
+      if (photoUrl != null) 'photoUrl': photoUrl,
+      if (followers != null) 'followers': followers,
+      if (following != null) 'following': following,
+      if (posts != null) 'posts': posts,
+      if (saved != null) 'saved': saved,
+      if (searchKey != null) 'searchKey': searchKey,
+    };
+  }
 
   static Users fromJson(DocumentSnapshot snap) {
     final snapshot = snap.data() as Map<String, dynamic>?;
