@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:holbegram/models/posts.dart';
 import 'package:holbegram/models/user.dart';
@@ -33,6 +35,92 @@ class _PostsState extends State<Posts> {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+      builder: (context, snapshot) {
+        // if (snapshot.connectionState == ConnectionState.waiting) {
+        //   return Center(child: CircularProgressIndicator());
+        // }
+        if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        }
+        // if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+        //   return Center(child: Text('Aucun document disponible'));
+        // }
+
+        if (snapshot.hasData) {
+          return ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+              var data =
+                  snapshot.data!.docs[index].data() as Map<String, dynamic>;
+              return SingleChildScrollView(
+                child: Container(
+                  margin: EdgeInsetsGeometry.lerp(
+                    const EdgeInsets.all(8),
+                    const EdgeInsets.all(8),
+                    10,
+                  ),
+                  height: 540,
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 255, 255, 255),
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    image: NetworkImage(data['profImage']),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Text(data['username']),
+                            Spacer(),
+                            IconButton(
+                              onPressed: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("Post Deleted")),
+                                );
+                              },
+                              icon: Icon(Icons.more_horiz),
+                            ),
+                            SizedBox(child: Text(data['caption'])),
+                            SizedBox(height: 10),
+                            Container(
+                              width: 350,
+                              height: 350,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25),
+                                image: DecorationImage(
+                                  image: NetworkImage(data['postUrl']),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        }
+
+        return CircularProgressIndicator();
+      },
+    );
   }
 }
