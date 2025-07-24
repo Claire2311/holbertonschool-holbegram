@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:holbegram/models/posts.dart';
 
 class Users {
   String? uid;
@@ -8,7 +9,7 @@ class Users {
   String? photoUrl;
   List<dynamic>? followers;
   List<dynamic>? following;
-  List<dynamic>? posts;
+  List<Post>? posts;
   List<dynamic>? saved;
   String? searchKey;
 
@@ -34,7 +35,7 @@ class Users {
       if (photoUrl != null) 'photoUrl': photoUrl,
       if (followers != null) 'followers': followers,
       if (following != null) 'following': following,
-      if (posts != null) 'posts': posts,
+      if (posts != null) 'posts': posts?.map((post) => post.toJson()).toList(),
       if (saved != null) 'saved': saved,
       if (searchKey != null) 'searchKey': searchKey,
     };
@@ -50,7 +51,11 @@ class Users {
       photoUrl: snapshot?['photoUrl'],
       followers: snapshot?['followers'],
       following: snapshot?['following'],
-      posts: snapshot?['posts'],
+      posts: snapshot?['posts'] != null
+          ? (snapshot!['posts'] as List)
+                .map((post) => Post.fromJson(post))
+                .toList()
+          : null,
       saved: snapshot?['saved'],
       searchKey: snapshot?['searchKey'],
     );
