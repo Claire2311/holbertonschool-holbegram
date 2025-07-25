@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/user.dart';
+import 'package:holbegram/screens/auth/methods/user_storage.dart';
 
 class AuthMethode {
   final _auth = FirebaseAuth.instance;
@@ -51,14 +52,28 @@ class AuthMethode {
         password: password,
       );
 
+      final storageMethods = StorageMethods();
+      String imageUrl = '';
+
+      if (file != null) {
+        imageUrl = await storageMethods.uploadImageToStorage(
+          false,
+          'profilePictures',
+          file,
+        );
+      }
+
       Users user = Users(
         uid: userCredential.user!.uid,
         email: email,
         username: username,
-        bio: "", // Default empty bio
-        followers: [], // Default empty followers list
-        following: [], // Default empty following list
-        photoUrl: "", // Default empty photo URL or handle file upload here
+        bio: "",
+        followers: [],
+        following: [],
+        photoUrl: imageUrl,
+        posts: [],
+        saved: [],
+        searchKey: '',
       );
 
       await _firestore
@@ -68,7 +83,7 @@ class AuthMethode {
 
       // if (context.mounted) {
       //   Navigator.of(context).pushReplacement(
-      //     MaterialPageRoute(builder: (context) => const HomePage()),
+      //     MaterialPageRoute(builder: (context) => const HomePage()), 🚨🚨🚨🚨🚨🚨🚨🚨
       //   );
       // }
       return "success";
@@ -85,7 +100,7 @@ class AuthMethode {
     }
   }
 
-  Future<Users?> getUserDetails() async {
+  Future<Users?> getCurrentUserDetails() async {
     if (_auth.currentUser == null) {
       return null;
     }

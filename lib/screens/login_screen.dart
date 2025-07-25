@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:holbegram/screens/home.dart';
 import '../widgets/text_field.dart';
 import './signup_screen.dart';
 import '../methods/auth_methods.dart';
@@ -102,6 +103,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 content: Text("Login"),
                                 backgroundColor: Colors.green,
                               ),
+                            );
+                            print('login successful');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Home()),
                             );
                           }
                         }

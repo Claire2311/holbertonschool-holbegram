@@ -1,9 +1,9 @@
-import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:holbegram/models/posts.dart';
 import 'package:holbegram/models/user.dart';
 import 'package:holbegram/methods/auth_methods.dart';
+import 'package:holbegram/screens/Pages/methods/post_storage.dart';
 
 class Posts extends StatefulWidget {
   const Posts({super.key});
@@ -16,6 +16,7 @@ class _PostsState extends State<Posts> {
   final AuthMethode _authMethode = AuthMethode();
   Users? user;
   List<Post>? userPosts;
+  final PostStorage _postStorage = PostStorage();
 
   @override
   void initState() {
@@ -24,7 +25,7 @@ class _PostsState extends State<Posts> {
   }
 
   void getUserData() async {
-    Users? userData = await _authMethode.getUserDetails();
+    Users? userData = await _authMethode.getCurrentUserDetails();
     setState(() {
       user = userData;
       if (user != null && user!.posts != null) {
@@ -88,11 +89,31 @@ class _PostsState extends State<Posts> {
                             Text(data['username']),
                             Spacer(),
                             IconButton(
-                              onPressed: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Post Deleted")),
+                              onPressed: () async {
+                                final response = await _postStorage.deletePost(
+                                  data['postId'],
                                 );
+                                if (response == "Post deleted") {
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text("Post Deleted"),
+                                        backgroundColor: Colors.green,
+                                      ),
+                                    );
+                                  }
+                                } else {
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text("Error: $response"),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  }
+                                }
                               },
+
                               icon: Icon(Icons.more_horiz),
                             ),
                             SizedBox(child: Text(data['caption'])),
