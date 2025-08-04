@@ -142,7 +142,7 @@ class _SignUpState extends State<SignUp> {
                         ),
                       ),
                       onPressed: () async {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) => AddPicture(
@@ -174,7 +174,7 @@ class _SignUpState extends State<SignUp> {
                       Text("Have an account?"),
                       TextButton(
                         onPressed: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => LoginScreen(),

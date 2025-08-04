@@ -1,7 +1,9 @@
+import 'package:cloudinary_api/uploader/cloudinary_uploader.dart';
 import 'package:flutter/material.dart';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:holbegram/main.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:holbegram/models/posts.dart';
@@ -12,7 +14,6 @@ class PostStorage {
 
   Future<String> uploadPost(
     String caption,
-    String uid,
     String username,
     String profImage,
     Uint8List image,
@@ -23,7 +24,7 @@ class PostStorage {
 
       if (image != null) {
         imageUrl = await storageMethods.uploadImageToStorage(
-          false,
+          true,
           'postImages',
           image,
         );
@@ -34,7 +35,7 @@ class PostStorage {
       final postId = uuid.v4();
 
       Post post = Post(
-        uid: uid,
+        uid: postId,
         username: username,
         caption: caption,
         profImage: profImage,
@@ -51,9 +52,13 @@ class PostStorage {
     }
   }
 
-  Future<String> deletePost(String postId) async {
-    //🚨🚨🚨 je n'ai pas utilisé publicId
+  Future<String> deletePost(String postId, String? publicId) async {
     try {
+      if (publicId != null && publicId.isNotEmpty) {
+        final storageMethods = StorageMethods();
+        await storageMethods.deleteImageFromStorage(publicId);
+      }
+
       await _firestore.collection('posts').doc(postId).delete();
       return "Post deleted";
     } on FirebaseAuthException catch (e) {

@@ -104,8 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 backgroundColor: Colors.green,
                               ),
                             );
-                            print('login successful');
-                            Navigator.push(
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(builder: (context) => Home()),
                             );

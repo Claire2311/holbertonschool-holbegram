@@ -81,11 +81,6 @@ class AuthMethode {
           .doc(userCredential.user!.uid)
           .set(user.toJson());
 
-      // if (context.mounted) {
-      //   Navigator.of(context).pushReplacement(
-      //     MaterialPageRoute(builder: (context) => const HomePage()), 🚨🚨🚨🚨🚨🚨🚨🚨
-      //   );
-      // }
       return "success";
     } on FirebaseAuthException catch (e) {
       if (context.mounted) {
