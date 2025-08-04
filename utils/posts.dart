@@ -92,12 +92,13 @@ class _PostsState extends State<Posts> {
                               onPressed: () async {
                                 final response = await _postStorage.deletePost(
                                   data['postId'],
+                                  data['publicId'],
                                 );
                                 if (response == "Post deleted") {
                                   if (context.mounted) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                        content: Text("Post Deleted"),
+                                        content: Text("Post deleted"),
                                         backgroundColor: Colors.green,
                                       ),
                                     );
