@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:holbegram/methods/auth_methods.dart';
 import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
+import 'package:holbegram/screens/home.dart';
 
 class AddPicture extends StatefulWidget {
   final String email;
@@ -126,6 +127,9 @@ class _AddPictureState extends State<AddPicture> {
                         backgroundColor: Colors.green,
                       ),
                     );
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => const Home()),
+                    );
                   }
                 } else {
                   // Show error message
@@ -139,6 +143,24 @@ class _AddPictureState extends State<AddPicture> {
               child: Text(
                 "Next",
                 style: TextStyle(color: Colors.white, fontSize: 30),
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all(
+                  Color.fromARGB(218, 255, 255, 255),
+                ),
+              ),
+              onPressed: () async {
+                Navigator.pop(context);
+              },
+              child: Text(
+                "Go back",
+                style: TextStyle(
+                  color: const Color.fromARGB(218, 226, 37, 24),
+                  fontSize: 14,
+                ),
               ),
             ),
           ],
