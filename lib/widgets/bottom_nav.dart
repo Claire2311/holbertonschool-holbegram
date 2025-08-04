@@ -1,6 +1,6 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:holbegram/screens/Pages/add_image.dart';
+import 'package:holbegram/screens/Pages/add_post.dart';
 import 'package:holbegram/screens/Pages/favorite.dart';
 import 'package:holbegram/screens/Pages/feed.dart';
 import 'package:holbegram/screens/Pages/profile_screen.dart';
@@ -29,6 +29,33 @@ class _BottomNavState extends State<BottomNav> {
     super.dispose();
   }
 
+  List listItemsMenu = [
+    {'name': 'Home', 'icon': Icons.home},
+    {'name': 'Search', 'icon': Icons.search},
+    {'name': 'Add', 'icon': Icons.add},
+    {'name': 'Favorite', 'icon': Icons.favorite_border},
+    {'name': 'Profile', 'icon': Icons.person_outline},
+  ];
+
+  List<BottomNavyBarItem> getBottomMenus(List tabs) {
+    return tabs
+        .map(
+          (item) => BottomNavyBarItem(
+            title: Container(
+              alignment: Alignment.center,
+              child: Text(
+                item['name'],
+                style: TextStyle(fontSize: 25, fontFamily: 'Billabong'),
+              ),
+            ),
+            icon: Icon(item['icon']),
+            activeColor: Colors.red,
+            inactiveColor: Colors.black,
+          ),
+        )
+        .toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,58 +72,7 @@ class _BottomNavState extends State<BottomNav> {
           setState(() => _currentIndex = index);
           _pageController.jumpToPage(index);
         },
-        items: <BottomNavyBarItem>[
-          BottomNavyBarItem(
-            title: Text(
-              'Home',
-              style: TextStyle(fontSize: 25, fontFamily: 'Billabong'),
-              textAlign: TextAlign.center,
-            ),
-            icon: Icon(Icons.home),
-            activeColor: Colors.red,
-            inactiveColor: Colors.black,
-          ),
-          BottomNavyBarItem(
-            title: Text(
-              'Search',
-              style: TextStyle(fontSize: 25, fontFamily: 'Billabong'),
-              textAlign: TextAlign.center,
-            ),
-            icon: Icon(Icons.search),
-            activeColor: Colors.red,
-            inactiveColor: Colors.black,
-          ),
-          BottomNavyBarItem(
-            title: Text(
-              'Add',
-              style: TextStyle(fontSize: 25, fontFamily: 'Billabong'),
-              textAlign: TextAlign.center,
-            ),
-            icon: Icon(Icons.add),
-            activeColor: Colors.red,
-            inactiveColor: Colors.black,
-          ),
-          BottomNavyBarItem(
-            title: Text(
-              'Favorite',
-              style: TextStyle(fontSize: 25, fontFamily: 'Billabong'),
-              textAlign: TextAlign.center,
-            ),
-            icon: Icon(Icons.favorite_border),
-            activeColor: Colors.red,
-            inactiveColor: Colors.black,
-          ),
-          BottomNavyBarItem(
-            title: Text(
-              'Profile',
-              style: TextStyle(fontSize: 25, fontFamily: 'Billabong'),
-              textAlign: TextAlign.center,
-            ),
-            icon: Icon(Icons.person_outline),
-            activeColor: Colors.red,
-            inactiveColor: Colors.black,
-          ),
-        ],
+        items: getBottomMenus(listItemsMenu),
       ),
     );
   }
