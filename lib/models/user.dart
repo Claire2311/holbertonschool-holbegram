@@ -9,7 +9,7 @@ class Users {
   String? photoUrl;
   List<dynamic>? followers;
   List<dynamic>? following;
-  List<Post>? posts;
+  List<dynamic>? posts;
   List<dynamic>? saved;
   String? searchKey;
 
@@ -35,7 +35,7 @@ class Users {
       if (photoUrl != null) 'photoUrl': photoUrl,
       if (followers != null) 'followers': followers,
       if (following != null) 'following': following,
-      if (posts != null) 'posts': posts?.map((post) => post.toJson()).toList(),
+      if (posts != null) 'posts': posts,
       if (saved != null) 'saved': saved,
       if (searchKey != null) 'searchKey': searchKey,
     };
@@ -51,11 +51,7 @@ class Users {
       photoUrl: snapshot?['photoUrl'],
       followers: snapshot?['followers'],
       following: snapshot?['following'],
-      posts: snapshot?['posts'] != null
-          ? (snapshot!['posts'] as List)
-                .map((post) => Post.fromJson(post))
-                .toList()
-          : null,
+      posts: snapshot?['posts'],
       saved: snapshot?['saved'],
       searchKey: snapshot?['searchKey'],
     );

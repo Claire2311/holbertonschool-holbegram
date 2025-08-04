@@ -103,6 +103,7 @@ class _AddImageState extends State<AddImage> {
                     currentUserDetails.username!,
                     currentUserDetails.photoUrl ?? '',
                     _image!,
+                    currentUserDetails.uid!,
                   );
 
                   if (result == "Ok") {

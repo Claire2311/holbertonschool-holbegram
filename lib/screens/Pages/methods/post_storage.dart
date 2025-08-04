@@ -17,6 +17,7 @@ class PostStorage {
     String username,
     String profImage,
     Uint8List image,
+    String userId,
   ) async {
     try {
       final storageMethods = StorageMethods();
@@ -46,6 +47,11 @@ class PostStorage {
       );
 
       await _firestore.collection('posts').doc().set(post.toJson());
+
+      await _firestore.collection('users').doc(userId).update({
+        'posts': FieldValue.arrayUnion([postId]),
+      });
+
       return "Ok";
     } on FirebaseAuthException catch (e) {
       return e.message ?? "An error occurred";
