@@ -46,7 +46,7 @@ class PostStorage {
         likes: [],
       );
 
-      await _firestore.collection('posts').doc().set(post.toJson());
+      await _firestore.collection('posts').doc(postId).set(post.toJson());
 
       await _firestore.collection('users').doc(userId).update({
         'posts': FieldValue.arrayUnion([postId]),

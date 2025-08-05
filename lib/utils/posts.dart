@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:holbegram/models/posts.dart';
 import 'package:holbegram/models/user.dart';
 import 'package:holbegram/methods/auth_methods.dart';
 import 'package:holbegram/screens/Pages/methods/post_storage.dart';
+import 'package:holbegram/utils/post_in_favorite.dart';
 
 class Posts extends StatefulWidget {
   const Posts({super.key});
@@ -17,22 +19,20 @@ class _PostsState extends State<Posts> {
   Users? user;
   List<Post>? userPosts;
   final PostStorage _postStorage = PostStorage();
+  final FavoritePosts _favoritePosts = FavoritePosts();
 
   @override
   void initState() {
     super.initState();
-    // getUserData();
+    _getCurrentUser();
   }
 
-  // void getUserData() async {
-  //   Users? userData = await _authMethode.getCurrentUserDetails();
-  //   setState(() {
-  //     user = userData;
-  //     if (user != null && user!.posts != null) {
-  //       userPosts = user!.posts!;
-  //     }
-  //   });
-  // }
+  void _getCurrentUser() async {
+    Users? currentUser = await _authMethode.getCurrentUserDetails();
+    setState(() {
+      user = currentUser;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +143,16 @@ class _PostsState extends State<Posts> {
                         child: Row(
                           spacing: 20.0,
                           children: [
-                            Icon(Icons.favorite_border),
+                            IconButton(
+                              onPressed: () {
+                                _favoritePosts.getPostInFavorite(
+                                  user!.uid!,
+                                  data['uid'],
+                                  data['postUrl'],
+                                );
+                              },
+                              icon: Icon(Icons.favorite_border),
+                            ),
                             Icon(Icons.chat_bubble_outline_outlined),
                             Icon(Icons.share),
                             Container(
