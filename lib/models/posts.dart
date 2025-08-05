@@ -42,7 +42,9 @@ class Post {
       username: snapshot?['username'],
       likes: snapshot?['likes'],
       postId: snapshot?['postId'],
-      datePublished: snapshot?['datePublished'],
+      datePublished: snapshot?['datePublished'] != null
+          ? (snapshot!['datePublished'] as Timestamp).toDate()
+          : null,
       postUrl: snapshot?['postUrl'],
       profImage: snapshot?['profImage'],
     );
