@@ -76,7 +76,11 @@ class _AddImageState extends State<AddImage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add a Post", style: TextStyle(fontSize: 40)),
+        leading: Image.asset('assets/images/logo.webp'),
+        title: Text(
+          "Add a Post",
+          style: TextStyle(fontFamily: "Billabong", fontSize: 40),
+        ),
         actions: [
           TextButton(
             onPressed: () async {
@@ -182,7 +186,7 @@ class _AddImageState extends State<AddImage> {
               SizedBox(height: 50),
               _image != null
                   ? CircleAvatar(
-                      radius: 100,
+                      radius: 150,
                       backgroundImage: MemoryImage(_image!),
                     )
                   : IconButton(
