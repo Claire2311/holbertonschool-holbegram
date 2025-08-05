@@ -145,7 +145,7 @@ class _PostsState extends State<Posts> {
                           children: [
                             IconButton(
                               onPressed: () {
-                                _favoritePosts.getPostInFavorite(
+                                _favoritePosts.putPostInFavorite(
                                   user!.uid!,
                                   data['uid'],
                                   data['postUrl'],

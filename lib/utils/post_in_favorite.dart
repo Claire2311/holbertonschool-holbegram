@@ -6,7 +6,7 @@ import 'package:holbegram/models/favorite_model.dart';
 class FavoritePosts {
   final _firestore = FirebaseFirestore.instance;
 
-  Future<String> getPostInFavorite(
+  Future<String> putPostInFavorite(
     String userId,
     String postId,
     String postUrl,
@@ -16,6 +16,7 @@ class FavoritePosts {
         userId: userId,
         postId: postId,
         postUrl: postUrl,
+        dateInFavorite: DateTime.now(),
       );
 
       await _firestore

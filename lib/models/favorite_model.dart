@@ -4,11 +4,13 @@ class FavoriteModel {
   String userId;
   String postId;
   String postUrl;
+  DateTime dateInFavorite;
 
   FavoriteModel({
     required this.userId,
     required this.postId,
     required this.postUrl,
+    required this.dateInFavorite,
   });
 
   Map<String, dynamic> toJson() {
@@ -16,6 +18,7 @@ class FavoriteModel {
       if (userId != null) 'userId': userId,
       if (postId != null) 'postId': postId,
       if (postUrl != null) 'postUrl': postUrl,
+      if (postUrl != null) 'dateInFavorite': dateInFavorite,
     };
   }
 
@@ -25,6 +28,7 @@ class FavoriteModel {
       userId: snapshot?['userId'],
       postId: snapshot?['postId'],
       postUrl: snapshot?['postUrl'],
+      dateInFavorite: (snapshot!['dateInFavorite'] as Timestamp).toDate(),
     );
   }
 }

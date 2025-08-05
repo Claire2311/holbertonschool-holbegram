@@ -22,6 +22,7 @@ class _FavoriteState extends State<Favorite> {
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('FavoritePosts')
+            .orderBy('dateInFavorite', descending: true)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
