@@ -1,9 +1,6 @@
-import 'package:cloudinary_api/uploader/cloudinary_uploader.dart';
-import 'package:flutter/material.dart';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:holbegram/main.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:holbegram/models/posts.dart';

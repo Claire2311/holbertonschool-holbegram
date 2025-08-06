@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:holbegram/screens/login_screen.dart';
 import 'package:holbegram/methods/auth_methods.dart';
 import 'package:holbegram/models/user.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:holbegram/utils/posts_current_user.dart';
 
 class Profile extends StatefulWidget {

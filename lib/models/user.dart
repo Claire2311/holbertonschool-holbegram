@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:holbegram/models/posts.dart';
 
 class Users {
   String? uid;

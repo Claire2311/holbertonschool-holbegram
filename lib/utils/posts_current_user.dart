@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:holbegram/models/posts.dart';
 import 'package:holbegram/models/user.dart';
 import 'package:holbegram/methods/auth_methods.dart';
-import 'package:holbegram/screens/Pages/methods/post_storage.dart';
-import 'package:holbegram/utils/post_in_favorite.dart';
 
 class PostsCurrentUser extends StatefulWidget {
   const PostsCurrentUser({super.key});

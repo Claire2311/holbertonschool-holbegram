@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:holbegram/methods/auth_methods.dart';
 import 'package:holbegram/screens/auth/upload_image_screen.dart';
 import '../widgets/text_field.dart';
 import './login_screen.dart';
-import '../screens/upload_image_screen.dart';
 
 class SignUp extends StatefulWidget {
   final TextEditingController? emailController;
