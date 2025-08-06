@@ -19,7 +19,6 @@ class _PostsState extends State<Posts> {
   List<Post>? userPosts;
   final PostStorage _postStorage = PostStorage();
   final FavoritePosts _favoritePosts = FavoritePosts();
-  bool isFavorite = false;
 
   @override
   void initState() {
@@ -36,7 +35,7 @@ class _PostsState extends State<Posts> {
 
   bool isPostInFavorites(List data) {
     if (user != null) {
-      return isFavorite = data.contains(user!.uid);
+      return data.contains(user!.uid);
     }
     return false;
   }
@@ -150,21 +149,22 @@ class _PostsState extends State<Posts> {
                           spacing: 20.0,
                           children: [
                             IconButton(
-                              onPressed: () {
-                                if (isPostInFavorites(data['likes'])) {
-                                  _favoritePosts.removePostFromFavorite(
+                              onPressed: () async {
+                                bool currentlyFavorite = isPostInFavorites(
+                                  data['likes'],
+                                );
+                                if (currentlyFavorite) {
+                                  await _favoritePosts.removePostFromFavorite(
                                     user!.uid!,
                                     data['uid'],
                                     data['postUrl'],
                                   );
-                                  isFavorite = false;
                                 } else {
-                                  _favoritePosts.putPostInFavorite(
+                                  await _favoritePosts.putPostInFavorite(
                                     user!.uid!,
                                     data['uid'],
                                     data['postUrl'],
                                   );
-                                  isFavorite = true;
                                 }
                               },
 
