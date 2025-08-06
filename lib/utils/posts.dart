@@ -161,6 +161,7 @@ class _PostsState extends State<Posts> {
                       Padding(
                         padding: EdgeInsets.only(
                           left: 35.0,
+                          right: 35.0,
                           top: 12.0,
                           bottom: 12.0,
                         ),
@@ -193,19 +194,24 @@ class _PostsState extends State<Posts> {
                                     : Icons.favorite_border,
                                 color: isPostInFavorites(data['likes'])
                                     ? Colors.red
-                                    : Colors.grey,
+                                    : Colors.black,
                               ),
                             ),
                             Icon(Icons.chat_bubble_outline_outlined),
-                            Icon(Icons.share),
-                            Container(
-                              alignment: Alignment.topRight,
-                              child: Icon(Icons.bookmark_border),
-                            ),
+                            Icon(Icons.send),
+                            Spacer(),
+                            Icon(Icons.bookmark_border),
                           ],
                         ),
                       ),
-                      // Text(data['likes'].length),
+                      Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.only(left: 35.0),
+                        child: Text(
+                          data['likes'].length.toString() + ' Liked',
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
                     ],
                   ),
                 ),
