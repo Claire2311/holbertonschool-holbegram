@@ -5,6 +5,7 @@ import 'package:holbegram/models/user.dart';
 import 'package:holbegram/methods/auth_methods.dart';
 import 'package:holbegram/screens/Pages/methods/post_storage.dart';
 import 'package:holbegram/utils/post_in_favorite.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Posts extends StatefulWidget {
   const Posts({super.key});
@@ -14,9 +15,10 @@ class Posts extends StatefulWidget {
 }
 
 class _PostsState extends State<Posts> {
+  final _auth = FirebaseAuth.instance;
   final AuthMethode _authMethode = AuthMethode();
   Users? user;
-  List<Post>? userPosts;
+  List<dynamic>? userPosts;
   final PostStorage _postStorage = PostStorage();
   final FavoritePosts _favoritePosts = FavoritePosts();
 
@@ -30,6 +32,7 @@ class _PostsState extends State<Posts> {
     Users? currentUser = await _authMethode.getCurrentUserDetails();
     setState(() {
       user = currentUser;
+      userPosts = currentUser!.posts!;
     });
   }
 
@@ -98,28 +101,44 @@ class _PostsState extends State<Posts> {
                           Spacer(),
                           IconButton(
                             onPressed: () async {
-                              final response = await _postStorage.deletePost(
-                                data['postId'],
-                                data['publicId'],
+                              bool currentUserPost = userPosts!.contains(
+                                data['uid'],
                               );
-                              if (response == "Post deleted") {
-                                if (context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text("Post deleted"),
-                                      backgroundColor: Colors.green,
-                                    ),
-                                  );
+                              if (currentUserPost) {
+                                final response = await _postStorage.deletePost(
+                                  data['postId'],
+                                  _auth.currentUser!.uid,
+                                  data['publicId'],
+                                );
+                                if (response == "Post deleted") {
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text("Post deleted"),
+                                        backgroundColor: Colors.green,
+                                      ),
+                                    );
+                                  }
+                                } else {
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text("Error: $response"),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  }
                                 }
-                              } else {
-                                if (context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text("Error: $response"),
-                                      backgroundColor: Colors.red,
+                              }
+                              if (!currentUserPost && context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      "You cannot delete this post",
                                     ),
-                                  );
-                                }
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
                               }
                             },
                             icon: Icon(Icons.more_horiz),

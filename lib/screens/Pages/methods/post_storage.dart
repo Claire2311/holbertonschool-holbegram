@@ -55,7 +55,11 @@ class PostStorage {
     }
   }
 
-  Future<String> deletePost(String postId, String? publicId) async {
+  Future<String> deletePost(
+    String postId,
+    String userId,
+    String? publicId,
+  ) async {
     try {
       if (publicId != null && publicId.isNotEmpty) {
         final storageMethods = StorageMethods();
@@ -63,6 +67,20 @@ class PostStorage {
       }
 
       await _firestore.collection('posts').doc(postId).delete();
+
+      await _firestore.collection('users').doc(userId).update({
+        'posts': FieldValue.arrayRemove([postId]),
+      });
+
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('FavoritePosts')
+          .where('postId', isEqualTo: postId)
+          .get();
+
+      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+        await _firestore.collection('FavoritePosts').doc(doc.id).delete();
+      }
+
       return "Post deleted";
     } on FirebaseAuthException catch (e) {
       return e.message ?? "An error occurred";
