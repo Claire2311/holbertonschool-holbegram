@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:holbegram/models/posts.dart';
 import 'package:holbegram/models/user.dart';
@@ -20,6 +19,7 @@ class _PostsState extends State<Posts> {
   List<Post>? userPosts;
   final PostStorage _postStorage = PostStorage();
   final FavoritePosts _favoritePosts = FavoritePosts();
+  bool isFavorite = false;
 
   @override
   void initState() {
@@ -32,6 +32,13 @@ class _PostsState extends State<Posts> {
     setState(() {
       user = currentUser;
     });
+  }
+
+  bool isPostInFavorites(List data) {
+    if (user != null) {
+      return isFavorite = data.contains(user!.uid);
+    }
+    return false;
   }
 
   @override
@@ -116,7 +123,6 @@ class _PostsState extends State<Posts> {
                                 }
                               }
                             },
-
                             icon: Icon(Icons.more_horiz),
                           ),
                         ],
@@ -145,13 +151,31 @@ class _PostsState extends State<Posts> {
                           children: [
                             IconButton(
                               onPressed: () {
-                                _favoritePosts.putPostInFavorite(
-                                  user!.uid!,
-                                  data['uid'],
-                                  data['postUrl'],
-                                );
+                                if (isPostInFavorites(data['likes'])) {
+                                  _favoritePosts.removePostFromFavorite(
+                                    user!.uid!,
+                                    data['uid'],
+                                    data['postUrl'],
+                                  );
+                                  isFavorite = false;
+                                } else {
+                                  _favoritePosts.putPostInFavorite(
+                                    user!.uid!,
+                                    data['uid'],
+                                    data['postUrl'],
+                                  );
+                                  isFavorite = true;
+                                }
                               },
-                              icon: Icon(Icons.favorite_border),
+
+                              icon: Icon(
+                                isPostInFavorites(data['likes'])
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color: isPostInFavorites(data['likes'])
+                                    ? Colors.red
+                                    : Colors.grey,
+                              ),
                             ),
                             Icon(Icons.chat_bubble_outline_outlined),
                             Icon(Icons.share),
@@ -162,6 +186,7 @@ class _PostsState extends State<Posts> {
                           ],
                         ),
                       ),
+                      // Text(data['likes'].length),
                     ],
                   ),
                 ),
