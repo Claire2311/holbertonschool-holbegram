@@ -145,7 +145,7 @@ class _AddImageState extends State<AddImage> {
               "Post",
               style: TextStyle(
                 fontFamily: "Billabong",
-                fontSize: 30,
+                fontSize: 25,
                 color: Color.fromARGB(218, 226, 37, 24),
                 fontWeight: FontWeight.bold,
               ),
