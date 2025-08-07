@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:holbegram/models/posts.dart';
 import 'package:holbegram/models/user.dart';
 import 'package:holbegram/methods/auth_methods.dart';
 import 'package:holbegram/screens/Pages/methods/post_storage.dart';
@@ -91,7 +90,11 @@ class _PostsState extends State<Posts> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
-                                  image: NetworkImage(data['profImage']),
+                                  image: NetworkImage(
+                                    data['profImage'] == ''
+                                        ? 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'
+                                        : data['profImage'],
+                                  ),
                                   fit: BoxFit.cover,
                                 ),
                               ),

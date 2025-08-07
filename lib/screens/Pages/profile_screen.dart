@@ -32,9 +32,12 @@ class _ProfileState extends State<Profile> {
     setState(() {
       user = currentUser;
       username = currentUser?.username ?? '';
-      profilePicture =
-          currentUser?.photoUrl ??
-          'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png';
+      if (currentUser?.photoUrl == null || currentUser?.photoUrl == '') {
+        profilePicture =
+            'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png';
+      } else {
+        profilePicture = currentUser?.photoUrl;
+      }
       numOfPosts = ((currentUser?.posts?.length) ?? 0).toString();
       numOfFollowers = ((currentUser?.followers?.length) ?? 0).toString();
       numOfFollowings = ((currentUser?.following?.length) ?? 0).toString();
